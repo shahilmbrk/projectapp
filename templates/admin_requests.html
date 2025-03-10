@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Registration Requests</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests %}
+        <tr>
+            <td>{{ req.username }}</td>
+            <td>{{ req.role }}</td>
+            <td>{{ req.status }}</td>
+            <td>
+                {% if req.status == 'Pending' %}
+                    <a href="{{ url_for('approve_request', request_id=req.id) }}" class="btn btn-success">Approve</a>
+                    <a href="{{ url_for('reject_request', request_id=req.id) }}" class="btn btn-danger">Reject</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
