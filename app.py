@@ -74,7 +74,7 @@ class RegistrationRequest(db.Model):
 # Routes
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -94,7 +94,7 @@ def login():
                 return redirect(url_for('admin_dashboard'))
         else:
             flash('Login Failed. Check username and password.', 'danger')
-    return render_template('login.html')
+    return render_template('index.html')
 
 @app.route('/student/dashboard')
 @login_required
