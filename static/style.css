@@ -172,4 +172,220 @@ button:hover {
     90% { opacity: 1; }
     100% { opacity: 0; }
 }                               
-            
+
+.dashboard-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.dashboard-button {
+  background-color: #271930;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  padding: 15px 20px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.dashboard-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #000000;
+  border: 2px solid #ffffff;
+}
+
+.logout {
+  background-color: #dc3545;
+}
+
+.logout:hover {
+  background-color: #c82333;
+}
+/* Dashboard Container */
+.dashboard-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Navigation Bar */
+.dashboard-nav {
+  width: 250px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+}
+
+.dashboard-nav h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.dashboard-nav p {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.nav-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-button {
+  background-color: #271930;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  padding: 12px 15px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #000000;
+  border: 2px solid #ffffff;
+}
+
+.logout {
+  background-color: #dc3545;
+}
+
+.logout:hover {
+  background-color: #c82333;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+}
+
+.dashboard-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* Form Styling */
+.form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+}
+
+/* Table Styling */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th, .table td {
+  padding: 12px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.table th {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.table tr:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+/* Files Section */
+.files-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+}
+
+.files-section h2 {
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.files-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.files-table th,
+.files-table td {
+  padding: 12px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.files-table th {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.files-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.files-table tr:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* View Button */
+.view-button {
+  background-color: #271930;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.view-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #000000;
+  border: 2px solid #ffffff;
+}

@@ -96,17 +96,9 @@ def login():
             flash('Login Failed. Check username and password.', 'danger')
     return render_template('index.html')
 
-@app.route('/student/dashboard')
-@login_required
-def student_dashboard():
-    if current_user.role != 'Student':
-        return redirect(url_for('home'))
-    
-    # Fetch the current student's uploaded files
-    documents = Document.query.filter_by(user_id=current_user.id).all()
-    return render_template('student_dashboard.html', documents=documents)
 
 @app.route('/uploads/<filename>')
+@login_required
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
@@ -271,6 +263,43 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'success')
     return redirect(url_for('home'))
+
+@app.route('/student/dashboard')
+@login_required
+def student_dashboard():
+    if current_user.role != 'Student':
+        return redirect(url_for('home'))
+    return render_template('student_dashboard.html')
+
+@app.route('/account')
+@login_required
+def account():
+    if current_user.role != 'Student':
+        return redirect(url_for('home'))
+    return render_template('account.html')
+
+@app.route('/project')
+@login_required
+def project():
+    if current_user.role != 'Student':
+        return redirect(url_for('home'))
+    # Fetch the current student's uploaded files
+    documents = Document.query.filter_by(user_id=current_user.id).all()
+    return render_template('project.html', documents=documents)
+
+@app.route('/communication')
+@login_required
+def communication():
+    if current_user.role != 'Student':
+        return redirect(url_for('home'))
+    return render_template('communication.html')
+
+@app.route('/help_support')
+@login_required
+def help_support():
+    if current_user.role != 'Student':
+        return redirect(url_for('home'))
+    return render_template('help_support.html')
 
 # Helper function
 def allowed_file(filename):

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <h2>Student Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('account') }}" class="nav-button">Account</a>
+            <a href="{{ url_for('project') }}" class="nav-button">Project</a>
+            <a href="{{ url_for('communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('help_support') }}" class="nav-button">Help & Support</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Uploaded Files Section -->
+        <div class="files-section">
+            <h2>Your Uploaded Files</h2>
+            <table class="files-table">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Abstract</th>
+                        <th>Group No</th>
+                        <th>Staff Name</th>
+                        <th>Upload Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documents %}
+                    <tr>
+                        <td>{{ doc.file_name }}</td>
+                        <td>{{ doc.student_name }}</td>
+                        <td>{{ doc.class_name }}</td>
+                        <td>{{ doc.abstract }}</td>
+                        <td>{{ doc.group_no }}</td>
+                        <td>{{ doc.staff_name }}</td>
+                        <td>{{ doc.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ doc.status }}</td>
+                        <td>
+                            <a href="{{ url_for('uploaded_file', filename=doc.file_name) }}" class="view-button" target="_blank">View File</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
