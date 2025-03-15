@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Coordinator Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('coordinator_dashboard') }}" class="nav-button">Dashboard</a>
+            <a href="{{ url_for('student_details') }}" class="nav-button">Student Details</a>
+            <a href="{{ url_for('project_proposals') }}" class="nav-button">Project Proposals</a>
+            <a href="{{ url_for('manage_groups') }}" class="nav-button">Manage Groups</a>
+            <a href="{{ url_for('announcement') }}" class="nav-button">Announcements</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Manage Groups Content -->
+    <div class="dashboard-content">
+        <h3>Manage Groups</h3>
+        <form method="POST" action="{{ url_for('assign_staff') }}">
+            <div class="mb-3">
+                <label for="student" class="form-label">Select Student</label>
+                <select class="form-control" id="student" name="student" required>
+                    <option value="">Select Student</option>
+                    {% for student in students %}
+                    <option value="{{ student.id }}">{{ student.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="staff" class="form-label">Assign Staff</label>
+                <select class="form-control" id="staff" name="staff" required>
+                    <option value="">Select Staff</option>
+                    {% for staff in staff_members %}
+                    <option value="{{ staff.id }}">{{ staff.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Assign</button>
+        </form>
+
+        <h4 class="mt-4">Current Assignments</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Assigned Staff</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.username }}</td>
+                    <td>{{ student.assigned_staff.username if student.assigned_staff else 'Not assigned' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

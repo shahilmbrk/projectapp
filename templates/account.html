@@ -1,17 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="wrapper">
-        <h2>Account</h2>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Student Account</h2>
         <p>Welcome, {{ current_user.username }}!</p>
-        <p>Here you can manage your account settings.</p>
-        <a href="{{ url_for('student_dashboard') }}" class="dashboard-button">Back to Dashboard</a>
+        <div class="nav-options">
+            <a href="{{ url_for('account') }}" class="nav-button">Account</a>
+            <a href="{{ url_for('upload_proposal') }}" class="nav-button">Upload Proposal</a>
+            <a href="{{ url_for('project') }}" class="nav-button">Project</a>
+            <a href="{{ url_for('student_communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('announcement') }}" class="nav-button">Announcements</a>
+            <a href="{{ url_for('help_support') }}" class="nav-button">Help & Support</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
     </div>
-</body>
-</html>
+
+    <!-- Account Details Section -->
+    <div class="dashboard-content">
+        <h3>Your Details</h3>
+        <div class="student-details">
+            <p><strong>Name:</strong> {{ current_user.full_name or 'Not provided' }}</p>
+            <p><strong>Registration Number:</strong> {{ current_user.registration_number or 'Not provided' }}</p>
+            <p><strong>Group Number:</strong> {{ current_user.group_number or 'Not provided' }}</p>
+            <p><strong>Group Members:</strong> {{ current_user.group_members or 'Not provided' }}</p>
+            <p><strong>Assigned Staff:</strong> {{ current_user.assigned_staff.username if current_user.assigned_staff else 'Not assigned' }}</p>
+        </div>
+
+        <!-- Form to Update Details -->
+        <h3>Update Your Details</h3>
+        <form method="POST" action="{{ url_for('update_account') }}">
+            <div class="mb-3">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="full_name" name="full_name" value="{{ current_user.full_name or '' }}">
+            </div>
+            <div class="mb-3">
+                <label for="registration_number" class="form-label">Registration Number</label>
+                <input type="text" class="form-control" id="registration_number" name="registration_number" value="{{ current_user.registration_number or '' }}">
+            </div>
+            <div class="mb-3">
+                <label for="group_number" class="form-label">Group Number</label>
+                <input type="text" class="form-control" id="group_number" name="group_number" value="{{ current_user.group_number or '' }}">
+            </div>
+            <div class="mb-3">
+                <label for="group_members" class="form-label">Group Members (comma-separated)</label>
+                <input type="text" class="form-control" id="group_members" name="group_members" value="{{ current_user.group_members or '' }}">
+            </div>
+            <div class="mb-3">
+                <label for="assigned_staff" class="form-label">Assigned Staff</label>
+                <select class="form-control" id="assigned_staff" name="assigned_staff">
+                    <option value="">Select Staff</option>
+                    {% for staff in staff_members %}
+                    <option value="{{ staff.id }}" {% if current_user.assigned_staff_id == staff.id %}selected{% endif %}>{{ staff.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

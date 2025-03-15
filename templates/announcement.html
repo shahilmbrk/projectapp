@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>{% if current_user.role == 'Coordinator' %}Coordinator{% else %}Student{% endif %} Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            {% if current_user.role == 'Coordinator' %}
+                <a href="{{ url_for('coordinator_dashboard') }}" class="nav-button">Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('student_dashboard') }}" class="nav-button">Dashboard</a>
+            {% endif %}
+            <a href="{{ url_for('announcement') }}" class="nav-button">Announcements</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Announcement Content -->
+    <div class="dashboard-content">
+        <h3>Announcements</h3>
+
+        <!-- Coordinator: Form to Post Announcements -->
+        {% if current_user.role == 'Coordinator' %}
+        <div class="post-announcement">
+            <h4>Post a New Announcement</h4>
+            <form method="POST" action="{{ url_for('post_announcement') }}">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">Content</label>
+                    <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">POST</button>
+            </form>
+        </div>
+        <hr>
+        {% endif %}
+
+        <!-- List of Announcements -->
+        <div class="announcement-list">
+            {% for announcement in announcements %}
+            <div class="announcement-item">
+                <h4>{{ announcement.title }}</h4>
+                <p>{{ announcement.content }}</p>
+                <small>Posted by {{ announcement.coordinator.username }} on {{ announcement.post_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

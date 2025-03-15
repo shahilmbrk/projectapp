@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Staff Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('staff_dashboard') }}" class="nav-button">Dashboard</a>
+            <a href="{{ url_for('staff_communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('staff_project_proposals') }}" class="nav-button">Project Proposals</a>
+            <a href="{{ url_for('staff_manage') }}" class="nav-button">Manage</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Communication Content -->
+    <div class="dashboard-content">
+        <h3>Communication</h3>
+        <div class="chat-container">
+            <!-- Select Student to Chat -->
+            <div class="mb-3">
+                <label for="student" class="form-label">Select Student</label>
+                <select class="form-control" id="student" name="student" onchange="loadChat(this.value)">
+                    <option value="">Select Student</option>
+                    {% for student in assigned_students %}
+                    <option value="{{ student.id }}">{{ student.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Chat Box -->
+            <div class="chat-box" id="chat-box" data-user-id="{{ current_user.id }}">
+                <!-- Chat messages will be loaded here -->
+            </div>
+
+            <!-- Message Input -->
+            <div class="message-input">
+                <input type="text" id="message" class="form-control" placeholder="Type your message...">
+                <button onclick="sendMessage()" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadChat(studentId) {
+        const chatBox = document.getElementById('chat-box');
+        const currentUserId = parseInt(chatBox.getAttribute('data-user-id')); // Get current user ID
+
+        if (!studentId) {
+            chatBox.innerHTML = '<p>Please select a student to start chatting.</p>';
+            return;
+        }
+
+        // Fetch messages between the staff and the selected student
+        fetch(`/get_messages/${studentId}`)
+            .then(response => response.json())
+            .then(messages => {
+                chatBox.innerHTML = messages.map(msg => `
+                    <div class="message ${msg.sender_id === currentUserId ? 'sent' : 'received'}">
+                        <p>${msg.content}</p>
+                        <small>${new Date(msg.timestamp).toLocaleString()}</small>
+                    </div>
+                `).join('');
+                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+            });
+    }
+
+    function sendMessage() {
+        const studentId = document.getElementById('student').value;
+        const message = document.getElementById('message').value;
+
+        if (!studentId || !message) {
+            alert('Please select a student and enter a message.');
+            return;
+        }
+
+        fetch('/send_message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ receiver_id: studentId, message: message }),
+        }).then(() => {
+            document.getElementById('message').value = ''; // Clear input
+            loadChat(studentId); // Reload chat
+        });
+    }
+
+    // Automatically refresh chat every 5 seconds
+    setInterval(() => {
+        const studentId = document.getElementById('student').value;
+        if (studentId) loadChat(studentId);
+    }, 5000);
+</script>
+{% endblock %}

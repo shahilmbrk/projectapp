@@ -1,42 +1,24 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h2>Guide Dashboard</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>File Name</th>
-            <th>Student Name</th>
-            <th>Class</th>
-            <th>Abstract</th>
-            <th>Group No</th>
-            <th>Staff Name</th>
-            <th>Upload Date</th>
-            <th>Status</th>
-            <th>Action</th>
-            <th>Open File</th>  <!-- New column -->
-        </tr>
-    </thead>
-    <tbody>
-        {% for doc in documents %}
-        <tr>
-            <td>{{ doc.file_name }}</td>
-            <td>{{ doc.student_name }}</td>
-            <td>{{ doc.class_name }}</td>
-            <td>{{ doc.abstract }}</td>
-            <td>{{ doc.group_no }}</td>
-            <td>{{ doc.staff_name }}</td>
-            <td>{{ doc.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-            <td>{{ doc.status }}</td>
-            <td>
-                <form method="POST" action="{{ url_for('verify_document', doc_id=doc.id) }}">
-                    <button type="submit" class="btn btn-success">Verify</button>
-                </form>
-            </td>
-            <td>
-                <a href="{{ url_for('uploaded_file', filename=doc.file_name) }}" target="_blank" class="btn btn-primary">Open</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Staff Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('staff_dashboard') }}" class="nav-button">Dashboard</a>
+            <a href="{{ url_for('staff_communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('staff_project_proposals') }}" class="nav-button">Project Proposals</a>
+            <a href="{{ url_for('staff_manage') }}" class="nav-button">Manage</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+        <h3>Welcome to the Staff Dashboard</h3>
+        <p>Use the navigation bar to access different sections of your dashboard.</p>
+    </div>
+</div>
 {% endblock %}

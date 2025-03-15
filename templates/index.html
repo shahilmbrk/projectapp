@@ -6,6 +6,9 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+<div class="auth-buttons">
+    <a href="{{ url_for('home') }}" class="btn btn-home">Home</a>
+</div>
 <body>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}

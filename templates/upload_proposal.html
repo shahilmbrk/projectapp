@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Student Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('account') }}" class="nav-button">Account</a>
+            <a href="{{ url_for('upload_proposal') }}" class="nav-button">Upload Proposal</a>
+            <a href="{{ url_for('project') }}" class="nav-button">Project</a>
+            <a href="{{ url_for('student_communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('announcement') }}" class="nav-button">Announcements</a>
+            <a href="{{ url_for('help_support') }}" class="nav-button">Help & Support</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- File Upload Section -->
+    <div class="dashboard-content">
+        <h3>Upload Proposal</h3>
+        <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="student_name" class="form-label">Student Name</label>
+                <input type="text" class="form-control" id="student_name" name="student_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="class_name" class="form-label">Class</label>
+                <input type="text" class="form-control" id="class_name" name="class_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="abstract" class="form-label">Abstract</label>
+                <textarea class="form-control" id="abstract" name="abstract" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="group_no" class="form-label">Group Number</label>
+                <input type="text" class="form-control" id="group_no" name="group_no" required>
+            </div>
+            <div class="mb-3">
+                <label for="staff_name" class="form-label">Staff Name</label>
+                <select class="form-control" id="staff_name" name="staff_name" required>
+                    <option value="">Select Staff</option>
+                    {% for staff in staff_members %}
+                    <option value="{{ staff.username }}">{{ staff.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">Upload Document</label>
+                <input type="file" class="form-control" id="file" name="file" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

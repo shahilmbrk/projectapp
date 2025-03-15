@@ -8,8 +8,10 @@
         <p>Welcome, {{ current_user.username }}!</p>
         <div class="nav-options">
             <a href="{{ url_for('account') }}" class="nav-button">Account</a>
+            <a href="{{ url_for('upload_proposal') }}" class="nav-button">Upload Proposal</a>
             <a href="{{ url_for('project') }}" class="nav-button">Project</a>
-            <a href="{{ url_for('communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('student_communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('announcement') }}" class="nav-button">Announcements</a>
             <a href="{{ url_for('help_support') }}" class="nav-button">Help & Support</a>
             <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
         </div>

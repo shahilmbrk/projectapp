@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Coordinator Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('coordinator_dashboard') }}" class="nav-button">Dashboard</a>
+            <a href="{{ url_for('student_details') }}" class="nav-button">Student Details</a>
+            <a href="{{ url_for('project_proposals') }}" class="nav-button">Project Proposals</a>
+            <a href="{{ url_for('manage_groups') }}" class="nav-button">Manage Groups</a>
+            <a href="{{ url_for('announcement') }}" class="nav-button">Announcements</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Project Proposals Content -->
+    <div class="dashboard-content">
+        <h3>Project Proposals</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Student Name</th>
+                    <th>Class</th>
+                    <th>Abstract</th>
+                    <th>Group No</th>
+                    <th>Staff Name</th>
+                    <th>Upload Date</th>
+                    <th>Status</th>
+                    <th>Open File</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in documents %}
+                <tr>
+                    <td>{{ doc.file_name }}</td>
+                    <td>{{ doc.student_name }}</td>
+                    <td>{{ doc.class_name }}</td>
+                    <td>{{ doc.abstract }}</td>
+                    <td>{{ doc.group_no }}</td>
+                    <td>{{ doc.staff_name }}</td>
+                    <td>{{ doc.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ doc.status }}</td>
+                    <td>
+                        <!-- Approve Button -->
+                        <form method="POST" action="{{ url_for('verify_document', doc_id=doc.id, action='approve') }}" style="display: inline;">
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+                        <!-- Reject Button -->
+                        <form method="POST" action="{{ url_for('verify_document', doc_id=doc.id, action='reject') }}" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('uploaded_file', filename=doc.file_name) }}" target="_blank" class="btn btn-primary">Open</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

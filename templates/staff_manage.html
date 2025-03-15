@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Staff Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('staff_dashboard') }}" class="nav-button">Dashboard</a>
+            <a href="{{ url_for('staff_communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('staff_project_proposals') }}" class="nav-button">Project Proposals</a>
+            <a href="{{ url_for('staff_manage') }}" class="nav-button">Manage</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Manage Content -->
+    <div class="dashboard-content">
+        <h3>Manage Students</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Registration Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in assigned_students %}
+                <tr>
+                    <td>{{ student.username }}</td>
+                    <td>{{ student.registration_number or 'Not provided' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

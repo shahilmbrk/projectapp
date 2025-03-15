@@ -1,5 +1,19 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1>Welcome to the Document Upload System</h1>
-<p>Please log in to access your dashboard.</p>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="home-container">
+    <!-- Title and Description -->
+    <div class="home-content">
+        <h1>Welcome to the Document Upload System</h1>
+        <p>Upload, manage, and share your documents with ease. Designed for students, staff, and coordinators.</p>
+    </div>
+
+    <!-- Login and Register Buttons at Top Right -->
+    <div class="auth-buttons">
+        <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
+        <a href="{{ url_for('register') }}" class="btn btn-register">Register</a>
+    </div>
+</div>
 {% endblock %}

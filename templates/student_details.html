@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Coordinator Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('coordinator_dashboard') }}" class="nav-button">Dashboard</a>
+            <a href="{{ url_for('student_details') }}" class="nav-button">Student Details</a>
+            <a href="{{ url_for('project_proposals') }}" class="nav-button">Project Proposals</a>
+            <a href="{{ url_for('manage_groups') }}" class="nav-button">Manage Groups</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Student Details Content -->
+    <div class="dashboard-content">
+        <h3>Student Details</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Registration Number</th>
+                    <th>Group Number</th>
+                    <th>Group Members</th>
+                    <th>Assigned Staff</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.username }}</td>
+                    <td>{{ student.full_name or 'Not provided' }}</td>
+                    <td>{{ student.registration_number or 'Not provided' }}</td>
+                    <td>{{ student.group_number or 'Not provided' }}</td>
+                    <td>{{ student.group_members or 'Not provided' }}</td>
+                    <td>{{ student.assigned_staff.username if student.assigned_staff else 'Not assigned' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

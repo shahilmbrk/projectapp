@@ -1,6 +1,11 @@
 {% extends "base.html" %}
+{% set show_admin_requests_link = False %}
 {% block content %}
 <h2>Admin Dashboard</h2>
+<div class="mb-3 mt-3">
+<a href="{{ url_for('admin_requests') }}" class="nav-button">Registration Requests</a>
+<a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+</div>
 <table class="table">
     <thead>
         <tr>

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <div class="dashboard-nav">
+        <h2>Student Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="nav-options">
+            <a href="{{ url_for('student_dashboard') }}" class="nav-button">Dashboard</a>
+            <a href="{{ url_for('student_communication') }}" class="nav-button">Communication</a>
+            <a href="{{ url_for('project') }}" class="nav-button">Project</a>
+            <a href="{{ url_for('upload_proposal') }}" class="nav-button">Upload Proposal</a>
+            <a href="{{ url_for('help_support') }}" class="nav-button">Help & Support</a>
+            <a href="{{ url_for('logout') }}" class="nav-button logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Communication Content -->
+    <div class="dashboard-content">
+        <h3>Communication</h3>
+        <div class="chat-container">
+            <!-- Chat Box -->
+            <div class="chat-box" id="chat-box" data-user-id="{{ current_user.id }}" data-staff-id="{{ current_user.assigned_staff_id }}">
+                <!-- Chat messages will be loaded here -->
+            </div>
+
+            <!-- Message Input -->
+            <div class="message-input">
+                <input type="text" id="message" class="form-control" placeholder="Type your message...">
+                <button onclick="sendMessage()" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadChat() {
+        const chatBox = document.getElementById('chat-box');
+        const currentUserId = parseInt(chatBox.getAttribute('data-user-id')); // Get current user ID
+        const staffId = parseInt(chatBox.getAttribute('data-staff-id')); // Get assigned staff ID
+
+        // Fetch messages between the student and assigned staff
+        fetch(`/get_messages/${staffId}`)
+            .then(response => response.json())
+            .then(messages => {
+                chatBox.innerHTML = messages.map(msg => `
+                    <div class="message ${msg.sender_id === currentUserId ? 'sent' : 'received'}">
+                        <p>${msg.content}</p>
+                        <small>${new Date(msg.timestamp).toLocaleString()}</small>
+                    </div>
+                `).join('');
+                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+            });
+    }
+
+    function sendMessage() {
+        const chatBox = document.getElementById('chat-box');
+        const staffId = parseInt(chatBox.getAttribute('data-staff-id')); // Get assigned staff ID
+        const message = document.getElementById('message').value;
+
+        if (!message) {
+            alert('Please enter a message.');
+            return;
+        }
+
+        fetch('/send_message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ receiver_id: staffId, message: message }),
+        }).then(() => {
+            document.getElementById('message').value = ''; // Clear input
+            loadChat(); // Reload chat
+        });
+    }
+
+    // Automatically refresh chat every 5 seconds
+    setInterval(loadChat, 5000);
+
+    // Load chat on page load
+    loadChat();
+</script>
+{% endblock %}
