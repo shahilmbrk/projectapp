@@ -245,16 +245,6 @@ def verify_document(doc_id, action):
     db.session.commit()
     return redirect(url_for('coordinator_dashboard' if current_user.role == 'Coordinator' else 'staff_dashboard'))
 
-@app.route('/admin/delete_user/<int:user_id>', methods=['POST'])
-@login_required
-def delete_user(user_id):
-    if current_user.role != 'Admin':
-        return redirect(url_for('home'))
-    user = User.query.get_or_404(user_id)
-    db.session.delete(user)
-    db.session.commit()
-    flash('User deleted', 'success')
-    return redirect(url_for('admin_dashboard'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -285,52 +275,101 @@ def register():
 @login_required
 def admin_requests():
     if current_user.role != 'Admin':
+        flash('You do not have permission to access this page.', 'error')
         return redirect(url_for('home'))
-    
-    # Fetch all pending registration requests
-    requests = RegistrationRequest.query.filter_by(status='Pending').all()
-    return render_template('admin_requests.html', requests=requests)
 
-@app.route('/admin/approve/<int:request_id>')
+    # Fetch all pending registration requests
+    registration_requests = RegistrationRequest.query.filter_by(status='Pending').all()
+    return render_template('admin_requests.html', registration_requests=registration_requests)
+
+@app.route('/admin/students')
+@login_required
+def admin_students():
+    if current_user.role != 'Admin':
+        flash('You do not have permission to access this page.', 'error')
+        return redirect(url_for('home'))
+
+    # Fetch all students
+    students = User.query.filter_by(role='Student').all()
+    return render_template('admin_students.html', students=students)
+
+@app.route('/admin/staff')
+@login_required
+def admin_staff():
+    if current_user.role != 'Admin':
+        flash('You do not have permission to access this page.', 'error')
+        return redirect(url_for('home'))
+
+    # Fetch all staff members
+    staff_members = User.query.filter_by(role='Staff').all()
+    return render_template('admin_staff.html', staff_members=staff_members)
+
+@app.route('/admin/coordinators')
+@login_required
+def admin_coordinators():
+    if current_user.role != 'Admin':
+        flash('You do not have permission to access this page.', 'error')
+        return redirect(url_for('home'))
+
+    # Fetch all coordinators
+    coordinators = User.query.filter_by(role='Coordinator').all()
+    return render_template('admin_coordinators.html', coordinators=coordinators)
+
+@app.route('/admin/delete_user/<int:user_id>', methods=['POST'])
+@login_required
+def delete_user(user_id):
+    if current_user.role != 'Admin':
+        flash('You do not have permission to perform this action.', 'error')
+        return redirect(url_for('home'))
+
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User deleted successfully!', 'success')
+    return redirect(request.referrer or url_for('admin_dashboard'))
+
+@app.route('/admin/approve/<int:request_id>', methods=['POST'])
 @login_required
 def approve_request(request_id):
     if current_user.role != 'Admin':
+        flash('You do not have permission to perform this action.', 'error')
         return redirect(url_for('home'))
-    
+
     # Fetch the registration request
     request = RegistrationRequest.query.get_or_404(request_id)
-    
+
     # Create a new user
     new_user = User(
         username=request.username,
-        role=request.role
+        role=request.role,
+        password_hash=request.password_hash  # Use the hashed password from the request
     )
-    new_user.password_hash = request.password_hash  # Use the hashed password from the request
     db.session.add(new_user)
-    
+
     # Update the request status
     request.status = 'Approved'
     db.session.commit()
-    
+
     flash(f'Registration request for {request.username} approved.', 'success')
     return redirect(url_for('admin_requests'))
 
-@app.route('/admin/reject/<int:request_id>')
+@app.route('/admin/reject/<int:request_id>', methods=['POST'])
 @login_required
 def reject_request(request_id):
     if current_user.role != 'Admin':
+        flash('You do not have permission to perform this action.', 'error')
         return redirect(url_for('home'))
-    
+
     # Fetch the registration request
     request = RegistrationRequest.query.get_or_404(request_id)
-    
+
     # Update the request status
     request.status = 'Rejected'
     db.session.commit()
-    
+
     flash(f'Registration request for {request.username} rejected.', 'success')
     return redirect(url_for('admin_requests'))
-
+    
 @app.route('/logout')
 @login_required
 def logout():

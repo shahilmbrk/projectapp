@@ -16,28 +16,25 @@
         </div>
     </div>
 
-    <!-- Registration Requests Content -->
+    <!-- Coordinators Content -->
     <div class="dashboard-content">
-        <h3>Registration Requests</h3>
+        <h3>Coordinators</h3>
         <table class="table">
             <thead>
                 <tr>
                     <th>Username</th>
-                    <th>Role</th>
+                    <th>Full Name</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {% for request in registration_requests %}
+                {% for coordinator in coordinators %}
                 <tr>
-                    <td>{{ request.username }}</td>
-                    <td>{{ request.role }}</td>
+                    <td>{{ coordinator.username }}</td>
+                    <td>{{ coordinator.full_name or 'Not provided' }}</td>
                     <td>
-                        <form method="POST" action="{{ url_for('approve_request', request_id=request.id) }}" style="display: inline;">
-                            <button type="submit" class="btn btn-success">Approve</button>
-                        </form>
-                        <form method="POST" action="{{ url_for('reject_request', request_id=request.id) }}" style="display: inline;">
-                            <button type="submit" class="btn btn-danger">Reject</button>
+                        <form method="POST" action="{{ url_for('delete_user', user_id=coordinator.id) }}" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
                 </tr>

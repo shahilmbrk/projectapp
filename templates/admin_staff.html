@@ -16,10 +16,31 @@
         </div>
     </div>
 
-    <!-- Dashboard Content -->
+    <!-- Staff Content -->
     <div class="dashboard-content">
-        <h3>Welcome to the Admin Dashboard</h3>
-        <p>Use the navigation bar to manage users and registration requests.</p>
+        <h3>Staff</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for staff in staff_members %}
+                <tr>
+                    <td>{{ staff.username }}</td>
+                    <td>{{ staff.full_name or 'Not provided' }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('delete_user', user_id=staff.id) }}" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
