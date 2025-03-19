@@ -323,9 +323,12 @@ def delete_user(user_id):
         return redirect(url_for('home'))
 
     user = User.query.get_or_404(user_id)
+
+    # Delete the user and their associated documents
     db.session.delete(user)
     db.session.commit()
-    flash('User deleted successfully!', 'success')
+
+    flash('User and their associated documents deleted successfully!', 'success')
     return redirect(request.referrer or url_for('admin_dashboard'))
 
 @app.route('/admin/approve/<int:request_id>', methods=['POST'])
